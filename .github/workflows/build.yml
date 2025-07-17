@@ -18,7 +18,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cobertura-de-testes
-          path: O-SUSHI-BACK-END/coverage/unit  # caminho atualizado
+          path: ./coverage/unit  # caminho atualizado
 
   sonarqube:
     runs-on: ubuntu-latest
