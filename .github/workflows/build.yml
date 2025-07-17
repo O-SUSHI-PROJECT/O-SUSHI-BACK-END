@@ -8,52 +8,56 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  tests:
-    name: ✅ Testes Unitários com Cobertura
+  test:
+    name: 🧪 Testes Unitários
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
-
-      - name: Instalar dependências
-        run: npm ci # ou yarn install, dependendo do projeto
-
-      - name: Rodar testes com cobertura
-        run: |
-          npm run test:coverage # ajuste conforme seu script
-        # Gera cobertura no diretório `coverage`
-
-      - name: Upload do relatório de cobertura
-        uses: actions/upload-artifact@v4
-        with:
-          name: cobertura
-          path: coverage/ # ajuste para o caminho real da cobertura
-
-  sonarqube:
-    name: 📊 SonarQube - Análise de Código
-    runs-on: ubuntu-latest
-    needs: tests # garante que os testes rodem antes
-
-    steps:
-      - name: Checkout do código
+      - name: 📦 Checkout do código
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Baixar cobertura de testes
+      - name: 📥 Instalação de dependências
+        run: npm ci
+
+      - name: 🧪 Executar testes unitários com cobertura
+        run: npm run test:unit
+
+      - name: 📤 Salvar cobertura como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura-unitaria
+          path: coverage/unit/lcov.info
+
+  sonarqube:
+    name: 📊 SonarQube - Análise de Código
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: 📦 Checkout do código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📥 Baixar artefato de cobertura
         uses: actions/download-artifact@v4
         with:
-          name: cobertura
-          path: coverage
+          name: cobertura-unitaria
+          path: coverage/unit/
 
-      - name: SonarQube Scan
+      - name: 🔍 SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=SEU_PROJECT_KEY
+            -Dsonar.projectKey=O-SUSHI-PROJECT_O-SUSHI-BACK-END
+            -Dsonar.organization=o-sushi-project
+            -Dsonar.projectName=O-SUSHI-BACK-END
+            -Dsonar.projectVersion=1.0
             -Dsonar.sources=.
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+            -Dsonar.tests=src
+            -Dsonar.test.inclusions=**/*.(spec|test).ts
+            -Dsonar.javascript.lcov.reportPaths=coverage/unit/lcov.info
