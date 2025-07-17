@@ -8,9 +8,32 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
+  tests:
+    name: ✅ Testes Unitários com Cobertura
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Instalar dependências
+        run: npm ci # ou yarn install, dependendo do projeto
+
+      - name: Rodar testes com cobertura
+        run: |
+          npm run test:coverage # ajuste conforme seu script
+        # Gera cobertura no diretório `coverage`
+
+      - name: Upload do relatório de cobertura
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura
+          path: coverage/ # ajuste para o caminho real da cobertura
+
   sonarqube:
     name: 📊 SonarQube - Análise de Código
     runs-on: ubuntu-latest
+    needs: tests # garante que os testes rodem antes
 
     steps:
       - name: Checkout do código
@@ -18,7 +41,19 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Baixar cobertura de testes
+        uses: actions/download-artifact@v4
+        with:
+          name: cobertura
+          path: coverage
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=SEU_PROJECT_KEY
+            -Dsonar.sources=.
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
