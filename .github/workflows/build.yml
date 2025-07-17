@@ -42,10 +42,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: cobertura-de-testes
-          path: O-SUSHI-BACK-END/coverage/unit
+          path: ./coverage/unit
 
       - name: 🔍 SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        # Adicione outras variáveis como SONAR_HOST_URL se necessário
