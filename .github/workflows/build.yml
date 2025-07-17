@@ -15,13 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be desativados para análise correta no SonarQube
+          fetch-depth: 0
 
       - name: Rodar Gitleaks para detectar segredos
         uses: gitleaks/gitleaks-action@v2
-        with:
-          config-path: .github/gitleaks.toml # opcional, pode remover essa linha se não tiver config custom
-
+        
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
