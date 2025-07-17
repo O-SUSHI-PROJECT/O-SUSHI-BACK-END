@@ -8,18 +8,33 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  sonarqube:
-    name: SonarQube
+  gitleaks:
+    name: 🔐 Gitleaks - Vazamento de Segredos
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Importante para verificar histórico completo
+
+      - name: Rodar Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          config-path: .github/gitleaks.toml  # Opcional
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  sonarqube:
+    name: 📊 SonarQube - Análise de Código
+    runs-on: ubuntu-latest
+    needs: gitleaks  # Só roda se o job gitleaks passar
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout do código
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Rodar Gitleaks para detectar segredos
-        uses: gitleaks/gitleaks-action@v2
-        
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
