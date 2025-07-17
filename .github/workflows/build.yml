@@ -1,3 +1,11 @@
+name: Testes Unitários e SonarQube
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -12,13 +20,13 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: 🧪 Executar testes unitários com cobertura
-        run: yarn test:unit
+        run: yarn test:unit --coverage
 
       - name: 📤 Salvar cobertura como artefato
         uses: actions/upload-artifact@v4
         with:
           name: cobertura-de-testes
-          path: ./coverage/unit  # caminho atualizado
+          path: ./coverage/unit
 
   sonarqube:
     runs-on: ubuntu-latest
@@ -40,3 +48,4 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        # Adicione outras variáveis como SONAR_HOST_URL se necessário
