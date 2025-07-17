@@ -44,7 +44,7 @@ jobs:
       - name: 📥 Baixar artefato de cobertura
         uses: actions/download-artifact@v4
         with:
-          name: cobertura-unitaria
+          name: cobertura-de-testes
           path: coverage/unit/
 
       - name: 🔍 SonarQube Scan
