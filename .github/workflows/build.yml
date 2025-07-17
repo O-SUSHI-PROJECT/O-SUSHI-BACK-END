@@ -19,16 +19,16 @@ jobs:
           fetch-depth: 0
 
       - name: 📥 Instalação de dependências
-        run: npm ci
-
+        run: yarn install --frozen-lockfile
+      
       - name: 🧪 Executar testes unitários com cobertura
-        run: npm run test:unit
-
+        run: yarn test:unit
+      
       - name: 📤 Salvar cobertura como artefato
         uses: actions/upload-artifact@v4
         with:
-          name: cobertura-unitaria
-          path: coverage/unit/lcov.info
+          name: cobertura-de-testes
+          path: coverage
 
   sonarqube:
     name: 📊 SonarQube - Análise de Código
