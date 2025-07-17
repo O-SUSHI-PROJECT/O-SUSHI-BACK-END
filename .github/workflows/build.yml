@@ -1,15 +1,5 @@
-name: Build
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened]
-
 jobs:
   test:
-    name: 🧪 Testes Unitários
     runs-on: ubuntu-latest
 
     steps:
@@ -20,18 +10,19 @@ jobs:
 
       - name: 📥 Instalação de dependências
         run: yarn install --frozen-lockfile
-      
+        working-directory: ./O-SUSHI-BACK-END  # ajuste para o caminho correto
+
       - name: 🧪 Executar testes unitários com cobertura
         run: yarn test:unit
-      
+        working-directory: ./O-SUSHI-BACK-END  # ajuste para o caminho correto
+
       - name: 📤 Salvar cobertura como artefato
         uses: actions/upload-artifact@v4
         with:
           name: cobertura-de-testes
-          path: coverage/unit
+          path: O-SUSHI-BACK-END/coverage/unit  # caminho atualizado
 
   sonarqube:
-    name: 📊 SonarQube - Análise de Código
     runs-on: ubuntu-latest
     needs: test
 
@@ -45,7 +36,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: cobertura-de-testes
-          path: coverage/unit
+          path: O-SUSHI-BACK-END/coverage/unit
 
       - name: 🔍 SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
