@@ -1,18 +1,27 @@
 name: Build
+
 on:
   push:
     branches:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0  # Shallow clones should be desativados para análise correta no SonarQube
+
+      - name: Rodar Gitleaks para detectar segredos
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          config-path: .github/gitleaks.toml # opcional, pode remover essa linha se não tiver config custom
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
