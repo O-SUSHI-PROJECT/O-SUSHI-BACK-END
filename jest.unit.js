@@ -11,7 +11,9 @@ const config = {
   ],
   coveragePathIgnorePatterns: [
     'src/main.ts',
-    'src/core/*',
+    'src/core/middlewares/*',
+    'src/core/interceptors/*',
+    'src/core/configuration/*',
     'jwt.service.ts',
     '.*\\.datasource\\.ts$',
     '.*\\.dto\\.ts$',
