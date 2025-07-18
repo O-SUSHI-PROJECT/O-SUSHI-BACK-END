@@ -18,7 +18,7 @@ describe('AuthService', () => {
 
 
   it('should return true when have the same api-key', () => {
-    expect(service.validateApiKey('test-api-key')).toBe(false);
+    expect(service.validateApiKey('test-api-key')).toBe(true);
   });
 
 });
