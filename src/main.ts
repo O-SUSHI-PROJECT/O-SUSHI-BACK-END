@@ -25,8 +25,8 @@ async function bootstrap(): Promise<void> {
   });
 
   const config = new DocumentBuilder()
-  .setTitle('Delivery API')
-  .setDescription('API do sistema de delivery')
+  .setTitle('O Sushi')
+  .setDescription('API do sistema de delivery de comida chinesa')
   .setVersion('1.0')
   .build();
 
