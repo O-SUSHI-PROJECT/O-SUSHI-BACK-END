@@ -26,7 +26,7 @@ async function bootstrap(): Promise<void> {
 
   const config = new DocumentBuilder()
   .setTitle('O Sushi')
-  .setDescription('API do sistema de delivery de comida chinesa')
+  .setDescription('API do sistema de delivery de comida japonesa')
   .setVersion('1.0')
   .build();
 
