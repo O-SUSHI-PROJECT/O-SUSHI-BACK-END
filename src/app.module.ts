@@ -9,8 +9,10 @@ import HealthController from './core/health/health.controller';
 import { ConfigModule } from '@nestjs/config';
 import requestContext from './core/middlewares/context.middleware';
 import { AuthMiddleware } from './core/middlewares/auth.middleware';
+import { ProductModule } from './product/product.module';
+
 @Module({
-  imports: [ConfigModule.forRoot()],
+  imports: [ConfigModule.forRoot(), ProductModule],
   controllers: [HealthController],
   providers: [AuthService],
 })
