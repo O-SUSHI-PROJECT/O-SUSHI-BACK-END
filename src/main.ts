@@ -3,6 +3,7 @@ import AppModule from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import RequestInterceptor from './core/interceptors/request.interceptor';
 import AppLogger from './core/configuration/loggers/app.logger';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -22,6 +23,16 @@ async function bootstrap(): Promise<void> {
   app.enableCors({
     origin: [/http(s)?:\/\/localhost:3001/, /http(s)?:\/\/localhost:3000/],
   });
+
+  const config = new DocumentBuilder()
+  .setTitle('O Sushi')
+  .setDescription('API do sistema de delivery de comida chinesa')
+  .setVersion('1.0')
+  .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
   await app.listen(PORT);
 }
 
