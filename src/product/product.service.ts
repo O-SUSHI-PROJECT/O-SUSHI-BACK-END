@@ -1,7 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Product } from './entities/product.entity';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductService {
@@ -64,56 +62,10 @@ export class ProductService {
     return this.products;
   }
 
-  findOne(id: string): Product {
-    const product = this.products.find(p => p.id === id);
-    if (!product) {
-      throw new NotFoundException(`Produto com ID ${id} não encontrado`);
-    }
-    return product;
-  }
-
   findByCategory(category: string): Product[] {
     return this.products.filter(p => 
       p.category.toLowerCase().includes(category.toLowerCase())
     );
-  }
-
-  create(createProductDto: CreateProductDto): Product {
-    const newProduct = new Product({
-      id: (this.products.length + 1).toString(),
-      ...createProductDto,
-      isAvailable: createProductDto.isAvailable ?? true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-
-    this.products.push(newProduct);
-    return newProduct;
-  }
-
-  update(id: string, updateProductDto: UpdateProductDto): Product {
-    const productIndex = this.products.findIndex(p => p.id === id);
-    if (productIndex === -1) {
-      throw new NotFoundException(`Produto com ID ${id} não encontrado`);
-    }
-
-    const updatedProduct = {
-      ...this.products[productIndex],
-      ...updateProductDto,
-      updatedAt: new Date(),
-    };
-
-    this.products[productIndex] = updatedProduct;
-    return updatedProduct;
-  }
-
-  remove(id: string): void {
-    const productIndex = this.products.findIndex(p => p.id === id);
-    if (productIndex === -1) {
-      throw new NotFoundException(`Produto com ID ${id} não encontrado`);
-    }
-
-    this.products.splice(productIndex, 1);
   }
 
   findAvailable(): Product[] {

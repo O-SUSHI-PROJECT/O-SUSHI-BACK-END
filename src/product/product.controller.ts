@@ -1,28 +1,38 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
   Query,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { ProductService } from './product.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 
+@ApiTags('Produtos')
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @Post()
-  create(@Body() createProductDto: CreateProductDto): Product {
-    return this.productService.create(createProductDto);
-  }
-
   @Get()
+  @ApiOperation({
+    summary: 'Listar produtos',
+    description: 'Retorna uma lista de todos os produtos disponíveis, com opção de filtrar por categoria'
+  })
+  @ApiQuery({
+    name: 'category',
+    required: false,
+    description: 'Filtrar produtos por categoria',
+    enum: ['Sushi', 'Temaki', 'Sashimi', 'Hot Roll'],
+    example: 'Sushi'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de produtos retornada com sucesso',
+    type: [Product]
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Não autorizado - API key inválida'
+  })
   findAll(@Query('category') category?: string): Product[] {
     if (category) {
       return this.productService.findByCategory(category);
@@ -31,25 +41,20 @@ export class ProductController {
   }
 
   @Get('available')
+  @ApiOperation({
+    summary: 'Listar produtos disponíveis',
+    description: 'Retorna apenas os produtos que estão disponíveis para pedido'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de produtos disponíveis retornada com sucesso',
+    type: [Product]
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Não autorizado - API key inválida'
+  })
   findAvailable(): Product[] {
     return this.productService.findAvailable();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string): Product {
-    return this.productService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateProductDto: UpdateProductDto,
-  ): Product {
-    return this.productService.update(id, updateProductDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string): void {
-    return this.productService.remove(id);
   }
 } 
