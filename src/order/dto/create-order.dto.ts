@@ -1,11 +1,20 @@
-import { IsString, IsNumber, IsOptional, IsArray, Min, IsEnum, ValidateNested, IsNotEmpty } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsOptional,
+  IsArray,
+  Min,
+  IsEnum,
+  ValidateNested,
+  IsNotEmpty,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
 export class CreateOrderItemDto {
   @ApiProperty({
     description: 'ID do produto',
-    example: '1'
+    example: '1',
   })
   @IsString()
   @IsNotEmpty()
@@ -14,7 +23,7 @@ export class CreateOrderItemDto {
   @ApiProperty({
     description: 'Quantidade do item',
     example: 2,
-    minimum: 1
+    minimum: 1,
   })
   @IsNumber()
   @Min(1)
@@ -24,7 +33,7 @@ export class CreateOrderItemDto {
 export class CreateOrderDto {
   @ApiProperty({
     description: 'Lista de itens do pedido',
-    type: [CreateOrderItemDto]
+    type: [CreateOrderItemDto],
   })
   @IsArray()
   @ValidateNested({ each: true })
@@ -33,7 +42,7 @@ export class CreateOrderDto {
 
   @ApiProperty({
     description: 'Nome do cliente',
-    example: 'João Silva'
+    example: 'João Silva',
   })
   @IsString()
   @IsNotEmpty()
@@ -41,7 +50,7 @@ export class CreateOrderDto {
 
   @ApiProperty({
     description: 'Telefone do cliente',
-    example: '(11) 99999-9999'
+    example: '(11) 99999-9999',
   })
   @IsString()
   @IsNotEmpty()
@@ -49,7 +58,7 @@ export class CreateOrderDto {
 
   @ApiProperty({
     description: 'Endereço de entrega',
-    example: 'Rua das Flores, 123 - Apto 45, São Paulo - SP'
+    example: 'Rua das Flores, 123 - Apto 45, São Paulo - SP',
   })
   @IsString()
   @IsNotEmpty()
@@ -58,7 +67,7 @@ export class CreateOrderDto {
   @ApiProperty({
     description: 'Observações do pedido',
     example: 'Sem wasabi, por favor',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsString()
@@ -67,9 +76,9 @@ export class CreateOrderDto {
   @ApiProperty({
     description: 'Forma de pagamento',
     example: 'CREDIT_CARD',
-    enum: ['CASH', 'CREDIT_CARD', 'DEBIT_CARD', 'PIX']
+    enum: ['CASH', 'CREDIT_CARD', 'DEBIT_CARD', 'PIX'],
   })
   @IsString()
   @IsEnum(['CASH', 'CREDIT_CARD', 'DEBIT_CARD', 'PIX'])
   paymentMethod: string;
-} 
+}

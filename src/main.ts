@@ -28,6 +28,15 @@ async function bootstrap(): Promise<void> {
   .setTitle('O Sushi')
   .setDescription('API do sistema de delivery de comida japonesa')
   .setVersion('1.0')
+  .addApiKey(
+    {
+      type: 'apiKey',
+      name: 'x-api-key',
+      in: 'header',
+      description: 'Chave de API para autenticação'
+    },
+    'api-key'
+  )
   .build();
 
   const document = SwaggerModule.createDocument(app, config);
