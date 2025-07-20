@@ -29,7 +29,7 @@ describe('OrderController', () => {
         customerName: 'João Silva',
         customerPhone: '(11) 99999-9999',
         deliveryAddress: 'Rua das Flores, 123',
-        paymentMethod: 'CREDIT_CARD'
+        paymentMethod: 'CREDIT_CARD',
       };
 
       const result = controller.create(createOrderDto);
@@ -39,4 +39,4 @@ describe('OrderController', () => {
       expect(result.customerName).toBe('João Silva');
     });
   });
-}); 
+});

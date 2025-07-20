@@ -1,14 +1,16 @@
+import { Controller, Post, Body } from '@nestjs/common';
 import {
-  Controller,
-  Post,
-  Body,
-} from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiSecurity,
+} from '@nestjs/swagger';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { Order } from './entities/order.entity';
 
 @ApiTags('Pedidos')
+@ApiSecurity('api-key')
 @Controller('orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
@@ -16,22 +18,23 @@ export class OrderController {
   @Post()
   @ApiOperation({
     summary: 'Enviar pedido',
-    description: 'Cria um novo pedido com validação de produtos e cálculo automático de valores'
+    description:
+      'Cria um novo pedido com validação de produtos e cálculo automático de valores',
   })
   @ApiResponse({
     status: 201,
     description: 'Pedido enviado com sucesso',
-    type: Order
+    type: Order,
   })
   @ApiResponse({
     status: 400,
-    description: 'Dados inválidos ou produto indisponível'
+    description: 'Dados inválidos ou produto indisponível',
   })
   @ApiResponse({
     status: 401,
-    description: 'Não autorizado - API key inválida'
+    description: 'Não autorizado - API key inválida',
   })
   create(@Body() createOrderDto: CreateOrderDto): Order {
     return this.orderService.create(createOrderDto);
   }
-} 
+}

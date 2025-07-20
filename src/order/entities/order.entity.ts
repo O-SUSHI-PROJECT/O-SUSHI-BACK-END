@@ -3,34 +3,34 @@ import { ApiProperty } from '@nestjs/swagger';
 export class OrderItem {
   @ApiProperty({
     description: 'ID do produto',
-    example: '1'
+    example: '1',
   })
   productId: string;
 
   @ApiProperty({
     description: 'Nome do produto',
-    example: 'Sushi California'
+    example: 'Sushi California',
   })
   productName: string;
 
   @ApiProperty({
     description: 'Quantidade do item',
     example: 2,
-    minimum: 1
+    minimum: 1,
   })
   quantity: number;
 
   @ApiProperty({
     description: 'Preço unitário do item',
-    example: 25.90,
-    minimum: 0
+    example: 25.9,
+    minimum: 0,
   })
   unitPrice: number;
 
   @ApiProperty({
     description: 'Preço total do item (quantidade × preço unitário)',
-    example: 51.80,
-    minimum: 0
+    example: 51.8,
+    minimum: 0,
   })
   totalPrice: number;
 }
@@ -38,96 +38,103 @@ export class OrderItem {
 export class Order {
   @ApiProperty({
     description: 'ID único do pedido',
-    example: 'ORD-2024-001'
+    example: 'ORD-2024-001',
   })
   id: string;
 
   @ApiProperty({
     description: 'Status do pedido',
     example: 'PENDING',
-    enum: ['PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'DELIVERED', 'CANCELLED']
+    enum: [
+      'PENDING',
+      'CONFIRMED',
+      'PREPARING',
+      'READY',
+      'DELIVERED',
+      'CANCELLED',
+    ],
   })
   status: string;
 
   @ApiProperty({
     description: 'Lista de itens do pedido',
-    type: [OrderItem]
+    type: [OrderItem],
   })
   items: OrderItem[];
 
   @ApiProperty({
     description: 'Subtotal do pedido (sem taxas)',
-    example: 76.30,
-    minimum: 0
+    example: 76.3,
+    minimum: 0,
   })
   subtotal: number;
 
   @ApiProperty({
     description: 'Taxa de entrega',
-    example: 5.00,
-    minimum: 0
+    example: 5.0,
+    minimum: 0,
   })
   deliveryFee: number;
 
   @ApiProperty({
     description: 'Total do pedido (subtotal + taxa de entrega)',
-    example: 81.30,
-    minimum: 0
+    example: 81.3,
+    minimum: 0,
   })
   total: number;
 
   @ApiProperty({
     description: 'Nome do cliente',
-    example: 'João Silva'
+    example: 'João Silva',
   })
   customerName: string;
 
   @ApiProperty({
     description: 'Telefone do cliente',
-    example: '(11) 99999-9999'
+    example: '(11) 99999-9999',
   })
   customerPhone: string;
 
   @ApiProperty({
     description: 'Endereço de entrega',
-    example: 'Rua das Flores, 123 - Apto 45, São Paulo - SP'
+    example: 'Rua das Flores, 123 - Apto 45, São Paulo - SP',
   })
   deliveryAddress: string;
 
   @ApiProperty({
     description: 'Observações do pedido',
     example: 'Sem wasabi, por favor',
-    required: false
+    required: false,
   })
   notes?: string;
 
   @ApiProperty({
     description: 'Forma de pagamento',
     example: 'CREDIT_CARD',
-    enum: ['CASH', 'CREDIT_CARD', 'DEBIT_CARD', 'PIX']
+    enum: ['CASH', 'CREDIT_CARD', 'DEBIT_CARD', 'PIX'],
   })
   paymentMethod: string;
 
   @ApiProperty({
     description: 'Data de criação do pedido',
-    example: '2024-01-01T18:30:00.000Z'
+    example: '2024-01-01T18:30:00.000Z',
   })
   createdAt: Date;
 
   @ApiProperty({
     description: 'Data da última atualização do pedido',
-    example: '2024-01-01T18:30:00.000Z'
+    example: '2024-01-01T18:30:00.000Z',
   })
   updatedAt: Date;
 
   @ApiProperty({
     description: 'Tempo estimado de entrega em minutos',
     example: 45,
-    minimum: 0
+    minimum: 0,
   })
   estimatedDeliveryTime: number;
 
   constructor(props: Partial<Order>) {
     Object.assign(this, props);
   }
-} 
+}

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { Order, OrderItem } from './entities/order.entity';
 import { CreateOrderDto, CreateOrderItemDto } from './dto/create-order.dto';
 import { ProductService } from '../product/product.service';
@@ -16,9 +20,11 @@ export class OrderService {
 
     for (const itemDto of createOrderDto.items) {
       const product = this.productService.findOne(itemDto.productId);
-      
+
       if (!product.isAvailable) {
-        throw new BadRequestException(`Produto ${product.name} não está disponível`);
+        throw new BadRequestException(
+          `Produto ${product.name} não está disponível`,
+        );
       }
 
       const totalPrice = product.price * itemDto.quantity;
@@ -29,23 +35,25 @@ export class OrderService {
         productName: product.name,
         quantity: itemDto.quantity,
         unitPrice: product.price,
-        totalPrice: totalPrice,
+        totalPrice,
       });
     }
 
-    const deliveryFee = subtotal <= 50 ? 5.00 : 0;
+    const deliveryFee = subtotal <= 50 ? 5.0 : 0;
     const total = subtotal + deliveryFee;
 
     const maxPreparationTime = Math.max(
-      ...validatedItems.map(item => {
+      ...validatedItems.map((item) => {
         const product = this.productService.findOne(item.productId);
         return product.preparationTime || 15;
-      })
+      }),
     );
     const estimatedDeliveryTime = maxPreparationTime + 30;
 
     const newOrder = new Order({
-      id: `ORD-${new Date().getFullYear()}-${this.orderCounter.toString().padStart(3, '0')}`,
+      id: `ORD-${new Date().getFullYear()}-${this.orderCounter
+        .toString()
+        .padStart(3, '0')}`,
       status: 'PENDING',
       items: validatedItems,
       subtotal,
@@ -66,6 +74,4 @@ export class OrderService {
 
     return newOrder;
   }
-
-
-} 
+}
