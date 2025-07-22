@@ -1,4 +1,4 @@
-name: Testes Unitários e SonarQube
+name: Testes Unitários
 
 on:
   push:
@@ -28,24 +28,4 @@ jobs:
           name: cobertura-de-testes
           path: ./coverage/unit
 
-  sonarqube:
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-      - name: 📦 Checkout do código
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: 📥 Baixar artefato de cobertura
-        uses: actions/download-artifact@v4
-        with:
-          name: cobertura-de-testes
-          path: ./coverage/unit
-
-      - name: 🔍 SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
