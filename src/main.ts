@@ -21,8 +21,13 @@ async function bootstrap(): Promise<void> {
   );
 
   app.enableCors({
-    origin: [/http(s)?:\/\/localhost:3001/, /http(s)?:\/\/localhost:3000/],
+    origin: [
+      /http(s)?:\/\/localhost:3001/,
+      /http(s)?:\/\/localhost:3000/,
+      'https://o-sushi-front-wbrm.vercel.app',
+    ],
   });
+
 
   const config = new DocumentBuilder()
   .setTitle('O Sushi')
